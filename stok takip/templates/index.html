@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Stok Takip Paneli</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <nav class="bg-white shadow px-8 py-4 flex justify-between">
+    <div class="text-xl font-bold text-gray-800">Stok Takip</div>
+    <div class="space-x-4">
+      <a href="{{ url_for('index') }}" class="text-blue-600 hover:underline">Anasayfa</a>
+      <a href="{{ url_for('urunler') }}" class="text-blue-600 hover:underline">Ürünler</a>
+      <a href="{{ url_for('urun_ekle') }}" class="text-blue-600 hover:underline">Ürün Ekle</a>
+      <a href="{{ url_for('istatistikler') }}" class="text-blue-600 hover:underline">İstatistikler</a>
+      <a href="{{ url_for('logout') }}" class="text-red-600 hover:underline">Çıkış Yap</a>
+    </div>
+  </nav>
+  <div class="container mx-auto px-4 py-6">
+    <h1 class="text-3xl font-bold mb-6">Stok Takip Paneli</h1>
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <div class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-semibold">Toplam Ürün</h2>
+        <p class="text-2xl">{{ urun_sayisi }}</p>
+      </div>
+      <div class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-semibold text-red-600">Kritik Stoktakiler</h2>
+        <ul class="list-disc ml-5 mt-2">
+          {% for urun in kritik_urunler %}
+          <li>{{ urun.ad }} ({{ urun.miktar }} adet)</li>
+          {% else %}
+          <li>Tüm stoklar yeterli.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Son Depo Hareketleri</h2>
+      <ul>
+        {% for hareket in hareketler %}
+          <li>{{ hareket.tarih }} - {{ hareket.hareket_tipi }} - Ürün ID: {{ hareket.urun_id }} - Miktar: {{ hareket.miktar }}</li>
+        {% else %}
+          <li>Henüz hareket yok.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

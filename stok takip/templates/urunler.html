@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ürünler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-white shadow px-8 py-4 flex justify-between">
+        <div class="text-xl font-bold text-gray-800">Stok Takip</div>
+        <div class="space-x-4">
+            <a href="{{ url_for('index') }}" class="text-blue-600 hover:underline">Anasayfa</a>
+            <a href="{{ url_for('urunler') }}" class="text-blue-600 hover:underline">Ürünler</a>
+            <a href="{{ url_for('urun_ekle') }}" class="text-blue-600 hover:underline">Ürün Ekle</a>
+            <a href="{{ url_for('istatistikler') }}" class="text-blue-600 hover:underline">İstatistikler</a>
+            <a href="{{ url_for('logout') }}" class="text-red-600 hover:underline">Çıkış Yap</a>
+        </div>
+    </nav>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Ürün Listesi</h1>
+        <form class="flex mb-6 space-x-2" method="get">
+            <input type="text" name="ad" placeholder="Ürün Adı" value="{{ ad }}" class="border px-3 py-2 rounded">
+            <input type="text" name="kategori" placeholder="Kategori" value="{{ kategori }}" class="border px-3 py-2 rounded">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ara</button>
+            <a href="{{ url_for('urunler') }}" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600">Temizle</a>
+        </form>
+        <table class="table-auto w-full mt-4 bg-white shadow rounded">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2">ID</th>
+                    <th class="px-4 py-2">Ad</th>
+                    <th class="px-4 py-2">Kategori</th>
+                    <th class="px-4 py-2">Miktar</th>
+                    <th class="px-4 py-2">Fiyat</th>
+                    <th class="px-4 py-2">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for urun in urunler %}
+                <tr>
+                    <td class="border px-4 py-2">{{ urun.id }}</td>
+                    <td class="border px-4 py-2">{{ urun.ad }}</td>
+                    <td class="border px-4 py-2">{{ urun.kategori }}</td>
+                    <td class="border px-4 py-2">
+                        {{ urun.miktar }}
+                        {% if urun.miktar < 10 %}
+                          <span class="ml-2 text-xs px-2 py-1 bg-red-200 text-red-700 rounded">Kritik Stok!</span>
+                        {% endif %}
+                    </td>
+                    <td class="border px-4 py-2">{{ urun.fiyat }}</td>
+                    <td class="border px-4 py-2 space-x-2">
+                        <a href="{{ url_for('urun_duzenle', id=urun.id) }}" class="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500 text-white">Düzenle</a>
+                        <a href="{{ url_for('hareket_ekle', id=urun.id) }}" class="bg-blue-400 px-2 py-1 rounded hover:bg-blue-500 text-white">Hareket</a>
+                        <a href="{{ url_for('urun_sil', id=urun.id) }}" class="text-red-600 hover:underline" onclick="return confirm('Silmek istediğine emin misin?');">Sil</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
